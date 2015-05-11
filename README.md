@@ -30,9 +30,9 @@ Example
 
 Example(s) are under the ./sketches subdirectory. The examples show a
 sketch Makefile that works just like the Arduino-Makefile sketch
-makefiles, but of course with the addition of dependency management.
-You still have to set certain variables required by Arduino-Makefile
-such as MONITOR_PORT.
+Makefiles (is a child Makefile), but of course with the addition of
+dependency management.  You still have to set certain variables
+required by Arduino-Makefile such as MONITOR_PORT.
 
 To compile, upload, and run a blink sketch:
 
