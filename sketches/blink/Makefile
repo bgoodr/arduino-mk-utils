@@ -1,28 +1,19 @@
 # arduino-mk-utils Makefile. Refer to https://github.com/bgoodr/arduino-mk-utils
 
-# ================================================================================
-# Bootstrap when ARDMK_DIR is not set (the default when the user just
-# types "make" in this directory):
-# ================================================================================
 ifeq "$(ARDMK_DIR)" ""
-
-
-include arduino-mk-utils-bootstrap.mk
-
-
-# ================================================================================
-# When ARDMK_DIR is now set by the callback from $(ARD_MK_UTILS_DIR)/Makefile
-# ================================================================================
+  # ================================================================================
+  # Bootstrap when ARDMK_DIR is not set (the default when the user just
+  # types "make" in this directory):
+  # ================================================================================
+  include arduino-mk-utils-bootstrap.mk
 else
 
-
-
-# This section is very similar to the Arduino-Makefile/examples/Blink/Makefile example:
+# Define the usual variable values as defined by the
+# Arduino-Makefile/examples/Blink/Makefile example (Note that the
+# definition of MONITOR_PORT is Linux specific):
 BOARD_TAG     = uno
 MONITOR_PORT  = /dev/ttyACM0
 include $(ARDMK_DIR)/Arduino.mk
-
-
 
 endif
 
