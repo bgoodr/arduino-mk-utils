@@ -1,4 +1,4 @@
-arduino-*
+arduino-[0-9]*
 Arduino-Makefile
 download.page
 env.sh
