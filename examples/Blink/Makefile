@@ -9,10 +9,8 @@ ifeq "$(ARDMK_DIR)" ""
 else
 
 # Define the usual variable values as defined by the
-# Arduino-Makefile/examples/Blink/Makefile example (Note that the
-# definition of MONITOR_PORT is Linux specific):
+# Arduino-Makefile/examples/Blink/Makefile example:
 BOARD_TAG     = uno
-MONITOR_PORT  = /dev/ttyACM0
 include $(ARDMK_DIR)/Arduino.mk
 
 endif

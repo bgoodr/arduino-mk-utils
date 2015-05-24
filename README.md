@@ -32,7 +32,7 @@ Example(s) are under the ./examples subdirectory. The examples show a
 sketch Makefile that works just like the Arduino-Makefile sketch
 Makefiles (is a child Makefile), but of course with the addition of
 dependency management via including a arduino-mk-utils-bootstrap.mk
-helper file.  You still have to set certain variables required by
+helper file.  You may or may not have to set certain variables required by
 Arduino-Makefile such as MONITOR_PORT (see the [Finding the
 MONITOR_PORT](#Finding_the_MONITOR_PORT) section below for details).
 
@@ -54,7 +54,15 @@ Finding the MONITOR_PORT
 <a name="Finding_the_MONITOR_PORT"></a>
 
 For instance, on Ubuntu or Debian Linux, commonly MONITOR_PORT turns
-out to be /dev/ttyACM0. You can find this out via the following procedure:
+out to be /dev/ttyACM0. When the "upload" rule is executed, this
+package attempts to determine the MONITOR_PORT by using the underlying
+Arduino-Makefile/Arduino.mk "help" rule to identify it (processing
+done inside
+[fix-monitor-port-permissions.sh](fix-monitor-port-permissions.sh)). The
+USB cable has to be plugged in for this to work.
+
+On Linux, you can also determine this device path via the following
+procedure:
 
 1. Before connecting the arduino USB cable to the computer execute: find /dev/ >/tmp/dev.1
 

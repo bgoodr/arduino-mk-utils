@@ -18,8 +18,8 @@ all: $(deps)
 		echo "       Set it to the path to a directory containing the child sketch Makefile."; \
 		false; \
 	fi
-	@if [ "$(filter upload,$(ARD_MK_UTILS_SKETCH_TARGETS))" = "upload" ]; then ./fix-monitor-port-permissions.sh; fi
-	. ./env.sh; $(MAKE) -C $(ARD_MK_UTILS_SKETCH_DIR) $(ARD_MK_UTILS_SKETCH_TARGETS)
+	@. ./env.sh; if [ "$(filter upload,$(ARD_MK_UTILS_SKETCH_TARGETS))" = "upload" ]; then ARD_MK_UTILS_SKETCH_DIR="$(ARD_MK_UTILS_SKETCH_DIR)" ./fix-monitor-port-permissions.sh; fi
+	. ./env.sh; unset MAKELEVEL; $(MAKE) -C $(ARD_MK_UTILS_SKETCH_DIR) $(ARD_MK_UTILS_SKETCH_TARGETS)
 
 clean:
 	rm -rf $(deps)

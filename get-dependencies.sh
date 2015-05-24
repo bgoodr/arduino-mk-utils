@@ -92,11 +92,18 @@ then
       set +x +e
     fi
 
+    # --------------------------------------------------------------------------------
+    # Install Arduino software as required:
+    # --------------------------------------------------------------------------------
     if [ -z "$ARDUINO_DIR" ]
     then
       get_arduino_dir
+    elif [ ! -d "$ARDUINO_DIR"  ]
+    then
+      echo "ERROR: ARDUINO_DIR was specified in the environment but does not exist as a directory: $ARDUINO_DIR"
+      exit 1
     fi
-  
+
     # --------------------------------------------------------------------------------
     # Update env.sh with ARDUINO_DIR so that the Makefile can
     # communicate it to the sketch upon run target:
