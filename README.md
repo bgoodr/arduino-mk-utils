@@ -57,9 +57,9 @@ Finding the MONITOR_PORT
 <a name="Finding_the_MONITOR_PORT"></a>
 
 For instance, on Ubuntu or Debian Linux, commonly MONITOR_PORT turns
-out to be /dev/ttyACM0. When the "upload" rule is executed, this
+out to be /dev/ttyACM0. When the `upload` rule is executed, this
 package attempts to determine the MONITOR_PORT by using the underlying
-Arduino-Makefile/Arduino.mk "help" rule to identify it (processing
+Arduino-Makefile/Arduino.mk `help` rule to identify it (processing
 done inside
 [fix-monitor-port-permissions.sh](fix-monitor-port-permissions.sh)). The
 USB cable has to be plugged in for this to work.
