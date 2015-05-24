@@ -32,8 +32,9 @@ Example(s) are under the ./sketches subdirectory. The examples show a
 sketch Makefile that works just like the Arduino-Makefile sketch
 Makefiles (is a child Makefile), but of course with the addition of
 dependency management.  You still have to set certain variables
-required by Arduino-Makefile such as MONITOR_PORT (see the Finding the
-MONITOR_PORT section below for details).
+required by Arduino-Makefile such as MONITOR_PORT (see the [Finding
+the MONITOR_PORT](#Finding_the_MONITOR_PORT) section below for
+details).
 
 To compile, upload, and run a blink sketch:
 
@@ -49,6 +50,7 @@ system-installed Python via:
 
 Finding the MONITOR_PORT
 ========================
+<a name="Finding_the_MONITOR_PORT"></a>
 
 For instance, on Ubuntu or Debian Linux, commonly MONITOR_PORT turns
 out to be /dev/ttyACM0. You can find this out via the following procedure:
