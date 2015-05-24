@@ -28,15 +28,16 @@ Dependencies
 Example
 =======
 
-Example(s) are under the ./sketches subdirectory. The examples show a
+Example(s) are under the ./examples subdirectory. The examples show a
 sketch Makefile that works just like the Arduino-Makefile sketch
 Makefiles (is a child Makefile), but of course with the addition of
-dependency management.  You still have to set certain variables
-required by Arduino-Makefile such as MONITOR_PORT (see the [Finding
-the MONITOR_PORT](#Finding_the_MONITOR_PORT) section below for
-details).
+dependency management via including a arduino-mk-utils-bootstrap.mk
+helper file.  You still have to set certain variables required by
+Arduino-Makefile such as MONITOR_PORT (see the [Finding the
+MONITOR_PORT](#Finding_the_MONITOR_PORT) section below for details).
 
-To compile, upload, and run a blink sketch:
+To compile, upload, and run a blink sketch (set ARD_MK_UTILS_DIR to
+the directory where you downloaded this package into):
 
     cd sketches/blink
     ARD_MK_UTILS_DIR=$HOME/bgoodr/arduino-mk-utils make
