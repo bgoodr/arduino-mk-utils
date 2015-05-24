@@ -21,3 +21,9 @@ Arduino device, all within a separate `xterm` window. The separate
 xterm is needed in cases where you are running make under an Emacs
 shell session which has a dumb terminal which won't work with
 `screen`.
+
+Do a man on `screen` to find usage. Useful key sequences are:
+
+* *C-a ?* - Online help
+* *C-a \\* - Quits the `screen` session
+
