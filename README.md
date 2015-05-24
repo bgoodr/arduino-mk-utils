@@ -63,18 +63,18 @@ out to be /dev/ttyACM0. You can find this out via the following procedure:
 
 1. You will then see something like:
 
-    1a2,7
-    > /dev/serial
-    > /dev/serial/by-path
-    > /dev/serial/by-path/pci-0000:00:0a.0-usb-0:3:1.0
-    > /dev/serial/by-id
-    > /dev/serial/by-id/usb-Arduino_Srl_Arduino_Uno_55437333737351019192-if00
-    > /dev/ttyACM0
-    175a182
-    > /dev/bus/usb/002/005
-    183a191,192
-    > /dev/char/166:0
-    > /dev/char/189:132
+    > 1a2,7
+    > > /dev/serial
+    > > /dev/serial/by-path
+    > > /dev/serial/by-path/pci-0000:00:0a.0-usb-0:3:1.0
+    > > /dev/serial/by-id
+    > > /dev/serial/by-id/usb-Arduino_Srl_Arduino_Uno_55437333737351019192-if00
+    > > /dev/ttyACM0
+    > 175a182
+    > > /dev/bus/usb/002/005
+    > 183a191,192
+    > > /dev/char/166:0
+    > > /dev/char/189:132
 
 1. The /dev/ttyACM0 line in the diff output is the value to set to MONITOR_PORT.
 
