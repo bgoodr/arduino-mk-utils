@@ -39,7 +39,7 @@ MONITOR_PORT](#Finding_the_MONITOR_PORT) section below for details).
 To compile, upload, and run a blink sketch (set ARD_MK_UTILS_DIR to
 the directory where you downloaded this package into):
 
-    cd sketches/blink
+    cd examples/Blink
     ARD_MK_UTILS_DIR=$HOME/bgoodr/arduino-mk-utils make
     ARD_MK_UTILS_DIR=$HOME/bgoodr/arduino-mk-utils make upload
 
