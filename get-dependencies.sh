@@ -111,7 +111,17 @@ then
       if [ ! -d Arduino-Makefile ]
       then
         echo "$0: Note: Cloning Arduino-Makefile from GitHub ..."
-        git clone git@github.com:sudar/Arduino-Makefile.git
+        # See https://help.github.com/articles/which-remote-url-should-i-use/
+        # why we don't use git@github.com:sudar/Arduino-Makefile.git
+        # mainly because it requires a ssh username and password which
+        # we don't typically want in most cases (e.g., we aren't
+        # pushing changes back into the sudar/Arduino-Makefile.git
+        # repo)
+        #
+        #    git clone git@github.com:sudar/Arduino-Makefile.git
+        #
+        # instead we do this:
+        git clone https://github.com/sudar/Arduino-Makefile.git
         if [ $? != 0 -o ! -d Arduino-Makefile ]
         then
           echo "$0: ERROR: Failed to clone Arduino-Makefile from GitHub"
