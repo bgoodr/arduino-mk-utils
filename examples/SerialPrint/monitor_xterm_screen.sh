@@ -14,4 +14,11 @@ then
   exit 1
 fi
 
+# Verify screen is installed:
+if ! which screen >/dev/null 2>&1
+then
+  echo "ERROR: You must first install screen and have it be in the PATH"
+  exit 1
+fi
+
 xterm -e /bin/bash -c "screen $MONITOR_PORT $MONITOR_BAUDRATE"
