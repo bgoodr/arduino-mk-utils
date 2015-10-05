@@ -47,7 +47,7 @@ the directory where you downloaded this package into):
     ARD_MK_UTILS_DIR=$HOME/bgoodr/arduino-mk-utils make upload
 
 If you have some local Python installed into your PATH that
-doesn'thave the "serial" module, you can set the path to the
+doesn't have the "serial" module, you can set the path to the
 system-installed Python via:
 
     PATH=/usr/bin:$PATH ARD_MK_UTILS_DIR=$HOME/bgoodr/arduino-mk-utils make upload
