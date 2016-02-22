@@ -35,39 +35,59 @@ then
     if [ "$(uname -m)" = "x86_64" ]
     then
 
-      # --------------------------------------------------------------------------------
-      # Download Teensyduino:
-      # --------------------------------------------------------------------------------
-      installer_base=teensyduino.64bit
-      url="http://www.pjrc.com/teensy/td_127/$installer_base"
-      if [ ! -f $installer_base ]
+      cat <<EOF
+This is not what we want. We do not want to download a large installer
+only to be forced into type in a path.  This problem does not have a
+solution yet. But see notes in the apply_board_hacks.sh script for WIP.
+EOF
+      exit 1 # Bail out now to warn the user about this sillyness above.
+
+      # Disable this installer code for now (see comments later on):
+      if false # disable
       then
-        curl \
-          --header 'Host: www.pjrc.com' \
-          --header 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0' \
-          --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
-          --header 'Accept-Language: en-US,en;q=0.5' \
-          --header 'Referer: http://www.pjrc.com/teensy/td_download.html' \
-          --header 'Connection: keep-alive' \
-          "$url" \
-          -o "$installer_base" \
-          -L
+
+        # --------------------------------------------------------------------------------
+        # Download Teensyduino:
+        # --------------------------------------------------------------------------------
+        installer_base=teensyduino.64bit
+        url="http://www.pjrc.com/teensy/td_127/$installer_base"
         if [ ! -f $installer_base ]
         then
-          echo "ERROR: Failed to download URL: $url"
-          exit 1
-        fi        
+          curl \
+            --header 'Host: www.pjrc.com' \
+            --header 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0' \
+            --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
+            --header 'Accept-Language: en-US,en;q=0.5' \
+            --header 'Referer: http://www.pjrc.com/teensy/td_download.html' \
+            --header 'Connection: keep-alive' \
+            "$url" \
+            -o "$installer_base" \
+            -L
+          if [ ! -f $installer_base ]
+          then
+            echo "ERROR: Failed to download URL: $url"
+            exit 1
+          fi        
+        fi
+
+        # --------------------------------------------------------------------------------
+        # Install Teensyduino:
+        # --------------------------------------------------------------------------------
+        echo "$0: Note: Installing Teensyduino"
+        chmod a+x $installer_base
+        ./$installer_base --help
+
       fi
 
-      # --------------------------------------------------------------------------------
-      # Install Teensyduino:
-      # --------------------------------------------------------------------------------
-      echo "$0: Note: Installing Teensyduino"
-      chmod a+x $installer_base
-      ./$installer_base --help
+      
+      # TODO: Use the code at
+      # https://github.com/PaulStoffregen/ARM-Toolchain that maybe
+      # underlies it. But it is not apparent that is all that is
+      # needed. Continue reading the very useful info at
+      # http://www.dorkbotpdx.org/blog/paul/gnu_toolchain_crosscompile_challenges
+      # and see if it actually applies here.
 
     fi
-    exit 1
   fi
   
 else
