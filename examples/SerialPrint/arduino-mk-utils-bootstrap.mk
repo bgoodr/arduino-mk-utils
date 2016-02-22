@@ -13,6 +13,5 @@ endif
 # it will execute the first rule in $(ARD_MK_UTILS_DIR) which will
 # install any required dependencies, set some environment such as
 # ARDMK_DIR, and then invoke make again in this directory:
-all:
 %:
 	make ARD_MK_UTILS_SKETCH_DIR=$(PWD) ARD_MK_UTILS_SKETCH_TARGETS="$@" -C $(ARD_MK_UTILS_DIR)

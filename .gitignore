@@ -1,4 +1,11 @@
 arduino-[0-9]*
 Arduino-Makefile
 download.page
-env.sh
+
+
+apply_board_hacks.sh
+env.Arduino-Makefile.sh
+env.arduino-software-dir.sh
+env.system-packages.sh
+teensyduino.64bit
+

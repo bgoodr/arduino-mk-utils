@@ -67,30 +67,12 @@ get_arduino_dir () {
   done
 }
 
-# --------------------------------------------------------------------------------
-# Nullify env.sh so that we can append variable export statements to it:
-# --------------------------------------------------------------------------------
-cat /dev/null > env.sh
-
 if [ -f /etc/issue  ]
 then
 
   if [[ "$(cat /etc/issue)" =~ Ubuntu|Debian ]]
   then
     echo "$0: Note: Debian or Ubuntu platform detected."
-
-    # --------------------------------------------------------------------------------
-    # Refer to "Install dependencies" section at
-    # http://hardwarefun.com/tutorials/compiling-arduino-sketches-using-makefile
-    # --------------------------------------------------------------------------------
-    if [ "$ARD_MK_UTILS_SKIP_SYSTEM_PACKAGES" != 1 ]
-    then
-      set -x -e
-      sudo apt-get -y install libdevice-serialport-perl
-      sudo apt-get -y install libyaml-perl
-      sudo apt-get -y autoremove
-      set +x +e
-    fi
 
     # --------------------------------------------------------------------------------
     # Install Arduino software as required:
@@ -105,46 +87,11 @@ then
     fi
 
     # --------------------------------------------------------------------------------
-    # Update env.sh with ARDUINO_DIR so that the Makefile can
+    # Update an env file with ARDUINO_DIR so that the Makefile can
     # communicate it to the sketch upon run target:
     # --------------------------------------------------------------------------------
-    echo "export ARDUINO_DIR=$ARDUINO_DIR" >> env.sh
+    echo "export ARDUINO_DIR=$ARDUINO_DIR" > $1
     
-    # --------------------------------------------------------------------------------
-    # Clone Arduino-Makefile as needed:
-    # --------------------------------------------------------------------------------
-    if [ -z "$ARDMK_DIR" ]
-    then
-      if [ ! -d Arduino-Makefile ]
-      then
-        echo "$0: Note: Cloning Arduino-Makefile from GitHub ..."
-        # See https://help.github.com/articles/which-remote-url-should-i-use/
-        # why we don't use git@github.com:sudar/Arduino-Makefile.git
-        # mainly because it requires a ssh username and password which
-        # we don't typically want in most cases (e.g., we aren't
-        # pushing changes back into the sudar/Arduino-Makefile.git
-        # repo)
-        #
-        #    git clone git@github.com:sudar/Arduino-Makefile.git
-        #
-        # instead we do this:
-        git clone https://github.com/sudar/Arduino-Makefile.git
-        if [ $? != 0 -o ! -d Arduino-Makefile ]
-        then
-          echo "$0: ERROR: Failed to clone Arduino-Makefile from GitHub"
-          exit 1
-        fi
-      fi
-      ARDMK_DIR=$(pwd)/Arduino-Makefile
-    fi
-    touch $ARDMK_DIR # has to be more recent than get-dependencies.sh
-    
-    # --------------------------------------------------------------------------------
-    # Update env.sh with ARDMK_DIR so that the Makefile can
-    # communicate it to the sketch upon run target:
-    # --------------------------------------------------------------------------------
-    echo "export ARDMK_DIR=$ARDMK_DIR" >> env.sh
-
   else
     echo "$0: ERROR: /etc/issue exists but is currently not supported"
     exit 1

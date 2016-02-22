@@ -1,8 +1,17 @@
-# Define the dependencies downloaded or created by the
-# get-dependencies.sh script:
-deps = Arduino-Makefile env.sh
+# Define the dependency env files. These will be touched or created by various rules defined later:
+ENV_FILES = env.system-packages.sh env.arduino-software-dir.sh env.arduino-software-hacks.sh env.Arduino-Makefile.sh 
 
-# Define the first rule to allow the user to run make from within this
+# Define code to check that ARD_MK_UTILS_SKETCH_DIR has been set by
+# the child sketch Makefile:
+define require_ARD_MK_UTILS_SKETCH_DIR
+	if [ -z "$(ARD_MK_UTILS_SKETCH_DIR)" ]; then \
+		echo "ERROR: ARD_MK_UTILS_SKETCH_DIR was not set in the environment"; \
+		echo "       Set it to the path to a directory containing the child sketch Makefile."; \
+		false; \
+	fi
+endef
+
+# Define the first rule to allow the user to run make from within their sketch
 # directory, with the requirement that the user must set
 # ARD_MK_UTILS_SKETCH_DIR in the environment prior to invoking
 # make. ARD_MK_UTILS_SKETCH_DIR is what each child Makefile for each
@@ -12,20 +21,45 @@ deps = Arduino-Makefile env.sh
 # Arduino-Makefile/Arduino.mk, such as make upload, make monitor, make
 # clean (note that the clean rule here applies only to cleaning
 # arduino-mk-utils):
-all: $(deps)
-	@if [ -z "$(ARD_MK_UTILS_SKETCH_DIR)" ]; then \
-		echo "ERROR: ARD_MK_UTILS_SKETCH_DIR was not set in the environment"; \
-		echo "       Set it to the path to a directory containing the child sketch Makefile."; \
-		false; \
-	fi
-	@. ./env.sh; if [ "$(filter upload,$(ARD_MK_UTILS_SKETCH_TARGETS))" = "upload" ]; then ARD_MK_UTILS_SKETCH_DIR="$(ARD_MK_UTILS_SKETCH_DIR)" ./fix-monitor-port-permissions.sh; fi
-	. ./env.sh; unset MAKELEVEL; $(MAKE) -C $(ARD_MK_UTILS_SKETCH_DIR) $(ARD_MK_UTILS_SKETCH_TARGETS)
+all: $(ENV_FILES) fix-monitor-port-permissions
+	@echo EXECUTING RULE: $@
+	@$(require_ARD_MK_UTILS_SKETCH_DIR)
+	$(foreach env_file,$(ENV_FILES), . $(env_file); ) \
+		unset MAKELEVEL; $(MAKE) -C $(ARD_MK_UTILS_SKETCH_DIR) $(ARD_MK_UTILS_SKETCH_TARGETS)
+
+# Run this each time through any target. It will be a no-op unless the
+# user specifies the upload target. Thus, this checks the existence of
+# the serial device only if it is connected:
+.PHONY : fix-monitor-port-permissions
+fix-monitor-port-permissions :
+	@echo EXECUTING RULE: $@
+	@$(require_ARD_MK_UTILS_SKETCH_DIR)
+	$(foreach env_file,$(ENV_FILES), . $(env_file); ) \
+		if [ "$(filter upload,$(ARD_MK_UTILS_SKETCH_TARGETS))" = "upload" ]; \
+		then \
+			ARD_MK_UTILS_SKETCH_DIR="$(ARD_MK_UTILS_SKETCH_DIR)" ./fix-monitor-port-permissions.sh; \
+		fi
 
 clean:
-	rm -rf $(deps)
+	@echo EXECUTING RULE: $@
+	@echo CLEANING ...
+	rm -rf $(ENV_FILES)
 
-# From Location: http://hardwarefun.com/tutorials/compiling-arduino-sketches-using-makefile
-# Install dependencies section. Here we are creating the env.sh
-$(deps) : get-dependencies.sh
-	./get-dependencies.sh
+# Reference: http://hardwarefun.com/tutorials/compiling-arduino-sketches-using-makefile
 
+env.system-packages.sh :
+	@echo EXECUTING RULE: $@
+	./get-system-packages.sh $@
+
+env.arduino-software-dir.sh : env.system-packages.sh
+	@echo EXECUTING RULE: $@
+	./get-arduino-software.sh $@
+
+env.arduino-software-hacks.sh : env.arduino-software-dir.sh
+	@echo EXECUTING RULE: $@
+	@$(require_ARD_MK_UTILS_SKETCH_DIR)
+	ARD_MK_UTILS_SKETCH_DIR=$(ARD_MK_UTILS_SKETCH_DIR) ./apply_board_hacks.sh $@
+
+env.Arduino-Makefile.sh : env.arduino-software-hacks.sh
+	@echo EXECUTING RULE: $@
+	./get-Arduino-Makefile.sh $@
